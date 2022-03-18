@@ -4,6 +4,8 @@ Here is a list of commands that you can run (on Linux) to collect, generate and 
 
 To those IPs you can then send an HTTP request with the following link in the path: github.com/vshymanskyy/StandWithUkraine/blob/main/docs/ToRussianPeople.md
 
+Why? It will appear in their server access logs. If there is enough traffic hitting their servers with this URL they may notice it.
+
 ## Method 1 - use Docker (recommended)
 
 ```
