@@ -8,7 +8,7 @@ MODE=""
 function modes {
 	echo "Usage:"
 	echo '	./start --mode=<value>'
-	echo "Modes: http, ftp"
+	echo "Supported modes: http"
 }
 
 for i in "$@"; do

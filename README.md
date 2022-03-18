@@ -4,15 +4,14 @@ Here is a list of commands that you can run (on Linux) to collect, generate and 
 
 To those IPs you can then send an HTTP request with the following link in the path: github.com/vshymanskyy/StandWithUkraine/blob/main/docs/ToRussianPeople.md
 
-## Dependencies
-
-To install dependencies (assuming you are using Ubuntu):
+## Method 1 - use Docker (recommended)
 
 ```
-
+docker build -t stop-putin .
+docker run -d --name stop-putin -u 1001 --rm -v $(pwd)/docker-files:/home/stop-putin/files stop-putin
 ```
 
-## Method 1 - automated (local run)
+## Method 2 - automated (local run)
 
 This method differs a bit from the manual procedure: it just connects to the hosts without using nmap to verify open ports.
 
@@ -33,13 +32,6 @@ That's it - let it run.
 
 You can stop it at any time. The stages are implemented in a way that it prepares the list of IPs once and use then existing data
 on the follwing runs. If you stop at a stage, the next time you run it will skip the previous stages.
-
-## Method 2 - use Docker
-
-```
-docker build -t stop-putin .
-docker run -d --name stop-putin -u 1001 --rm -v $(pwd)/docker-files:/home/stop-putin/files stop-putin
-```
 
 ## Method 3 - manual
 
