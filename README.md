@@ -11,7 +11,7 @@ docker build -t stop-putin .
 docker run -d --name stop-putin -u 1001 --rm -v $(pwd)/docker-files:/home/stop-putin/files stop-putin
 ```
 
-## Method 2 - automated (local run)
+## Method 2 - automated script on the host
 
 This method differs a bit from the manual procedure: it just connects to the hosts without using nmap to verify open ports.
 
