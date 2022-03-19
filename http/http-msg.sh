@@ -20,6 +20,15 @@ for i in "$@"; do
     -t=*|--tor=*)
       TOR_PROXY="--socks5-hostname ${i#*=}"
       echo "Using TOR: ${i#*=}"
+      echo " -> testing connection to Tor..."
+      set +e
+      curl $TOR_PROXY www.google.com
+      RES=$?
+      set -e
+      if [[ $RES -ne 0 ]]; then
+      	echo " x> connection failed... make sure Tor service is running"
+      	exit 1;
+      fi
       shift # past argument=value
       ;;
 
