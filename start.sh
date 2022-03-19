@@ -11,6 +11,8 @@ function modes {
 	echo "Supported modes: http"
 }
 
+TOR_PROXY=""
+
 for i in "$@"; do
   case $i in
 
@@ -23,7 +25,12 @@ for i in "$@"; do
       FORCE=1
       shift # past argument with no value
       ;;
-    
+
+    -t=*|--tor=*)
+      TOR_PROXY="$i"
+      shift # past argument=value
+      ;;
+
     -*|--*)
       echo "Unknown option $i"
       modes
@@ -111,14 +118,14 @@ if [[ $MODE == "http" ]]; then
 	if [[ ! -f "./files/ips-80.txt" ]]; then
 		# For the first run, use all IPs (it will create a cached list of IPs that connected successfully)
 		echo "This is the first run - it will be slow, so bear with me"
-		cat ./files/russian-ips.txt | ./http/http-msg.sh
+		cat ./files/russian-ips.txt | ./http/http-msg.sh -t $TOR_PROXY
 		echo "From here on, only the successfully reached IPs will be used - will be much faster!"
 	fi
 
 	while [ true ]
 	do
 		# Use and update optimized list
-		cat ./files/ips-80.txt | ./http/http-msg.sh
+		cat ./files/ips-80.txt | ./http/http-msg.sh $TOR_PROXY
 	done
 	exit 0;
 fi

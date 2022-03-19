@@ -86,3 +86,12 @@ cat ./files/port-scan.txt | grep -i '80\/\(filtered\|open\)' | cut -d' ' -f2 > .
 ```
 cat ./files/ips-80-nmap.txt | ./http/http-msg.sh
 ```
+
+## Using a Tor proxy
+
+First, make sure you start Tor. Assuming Tor is running locally on port 9150:
+
+```
+./start.sh --mode=http --tor=localhost:9150
+```
+

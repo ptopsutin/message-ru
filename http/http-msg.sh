@@ -12,13 +12,35 @@ touch $TMP_FILE
 # Load user agents
 source ./http/user-agent.sh
 
+TOR_PROXY=""
+
+# Command line params
+for i in "$@"; do
+  case $i in
+    -t=*|--tor=*)
+      TOR_PROXY="--socks5-hostname ${i#*=}"
+      echo "Using TOR: ${i#*=}"
+      shift # past argument=value
+      ;;
+
+    -*|--*)
+      echo "http-msg.sh: Unknown option $i"
+      exit 1
+      ;;
+    
+    *)
+      ;;
+  esac
+done
+
+
 if [[ -p /dev/stdin ]]; then
 	echo "Starting..."
 	COUNTER=0
 	while read line; do
 		ADDRESS=http://$line/github.com/vshymanskyy/StandWithUkraine/blob/main/docs/ToRussianPeople.md
 		set +e
-		LANG=en_US curl --silent --output /dev/null --connect-timeout 0.1 --max-time 1 -H "Host:stop.the.war" --user-agent "$(randomuseragent)" --head $ADDRESS
+		LANG=en_US curl $TOR_PROXY --silent --output /dev/null --connect-timeout 0.1 --max-time 1 -H "Host:stop.the.war" --user-agent "$(randomuseragent)" --head $ADDRESS
 		RES=$?
 		set -e
 		if [[ $RES -eq 0 || $RES -eq 52 || $RES -eq 56 ]]; then
