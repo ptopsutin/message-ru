@@ -13,16 +13,20 @@ touch $TMP_FILE
 source ./http/user-agent.sh
 
 TOR_PROXY=""
+CONNECTION_TIMEOUT="--connect-timeout 0.5 --max-time 1"
+SILENT_OUTPUT="--silent --output /dev/null"
 
 # Command line params
 for i in "$@"; do
   case $i in
     -t=*|--tor=*)
       TOR_PROXY="--socks5-hostname ${i#*=}"
+      # TOR connections will be slower
+      CONNECTION_TIMEOUT="--connect-timeout 1 --max-time 2"
       echo "Using TOR: ${i#*=}"
       echo " -> testing connection to Tor..."
       set +e
-      LANG=en_US curl $TOR_PROXY --silent --output /dev/null --connect-timeout 0.1 --max-time 1 www.google.com
+      LANG=en_US curl $TOR_PROXY $SILENT_OUTPUT $CONNECTION_TIMEOUT www.google.com
       RES=$?
       set -e
       if [[ $RES -ne 0 ]]; then
@@ -49,7 +53,7 @@ if [[ -p /dev/stdin ]]; then
 	while read line; do
 		ADDRESS=http://$line/github.com/vshymanskyy/StandWithUkraine/blob/main/docs/ToRussianPeople.md
 		set +e
-		LANG=en_US curl $TOR_PROXY --silent --output /dev/null --connect-timeout 0.1 --max-time 1 -H "Host:stop.the.war" --user-agent "$(randomuseragent)" --head $ADDRESS
+		LANG=en_US curl $TOR_PROXY $SILENT_OUTPUT $CONNECTION_TIMEOUT -H "Host:stop.the.war" --user-agent "$(randomuseragent)" --head $ADDRESS
 		RES=$?
 		set -e
 		if [[ $RES -eq 0 || $RES -eq 52 || $RES -eq 56 ]]; then
@@ -61,7 +65,7 @@ if [[ -p /dev/stdin ]]; then
 
 		COUNTER=$((COUNTER+1))
 		if [[ $(($COUNTER % 100)) -eq 0 ]]; then
-			echo "Reached "$(cat $TMP_FILE | wc -l)" hosts so far"
+			echo "Reached "$(cat $TMP_FILE | wc -l)" hosts so far (from "$COUNTER" requests)"
 		fi
 	done < /dev/stdin
 	mv -f $TMP_FILE $FILENAME
