@@ -10,7 +10,10 @@ Why? It will appear in their server access logs. If there is enough traffic hitt
 
 ```
 docker build -t stop-putin .
-docker run -d --name stop-putin -u 1001 --rm -v $(pwd)/docker-files:/home/stop-putin/files stop-putin
+# Fix folder permissions
+chmod -R 700 ./files
+sudo chown -R 1001 ./files
+docker run -d --name stop-putin -u 1001 --rm -v $(pwd)/files:/home/stop-putin/files stop-putin
 ```
 
 ## Method 2 - automated script on the host
