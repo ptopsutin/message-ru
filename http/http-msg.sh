@@ -8,13 +8,17 @@ TMP_FILE=$FILENAME".tmp"
 rm -f $TMP_FILE
 touch $TMP_FILE
 
+
+# Load user agents
+source ./http/user-agent.sh
+
 if [[ -p /dev/stdin ]]; then
 	echo "Starting..."
 	COUNTER=0
 	while read line; do
 		ADDRESS=http://$line/github.com/vshymanskyy/StandWithUkraine/blob/main/docs/ToRussianPeople.md
 		set +e
-		LANG=en_US curl --silent --output /dev/null --connect-timeout 0.1 --max-time 1 -H "Host:stop.the.war" --user-agent "Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0" --head $ADDRESS
+		LANG=en_US curl --silent --output /dev/null --connect-timeout 0.1 --max-time 1 -H "Host:stop.the.war" --user-agent "$(randomuseragent)" --head $ADDRESS
 		RES=$?
 		set -e
 		if [[ $RES -eq 0 || $RES -eq 52 || $RES -eq 56 ]]; then
