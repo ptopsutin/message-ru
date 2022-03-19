@@ -22,7 +22,7 @@ for i in "$@"; do
       echo "Using TOR: ${i#*=}"
       echo " -> testing connection to Tor..."
       set +e
-      curl $TOR_PROXY --silent --output /dev/null --connect-timeout 0.1 --max-time 1 www.google.com
+      LANG=en_US curl $TOR_PROXY --silent --output /dev/null --connect-timeout 0.1 --max-time 1 www.google.com
       RES=$?
       set -e
       if [[ $RES -ne 0 ]]; then
