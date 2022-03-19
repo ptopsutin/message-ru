@@ -36,6 +36,22 @@ for i in "$@"; do
 done
 
 mkdir -p ./files
+
+# Check permissions
+set +e
+touch ./files/test.tmp
+RES=$?
+set -e
+
+if [[ $RES -ne 0 ]]; then
+	echo "Folder ./files seems to have the wrong permissions"
+	echo "Run the following commands:"
+	echo "	sudo chown -R 1001 ./files"
+	echo "	sudo chmod -R 700 ./files"
+	echo "And then, try again"
+	exit 1;
+fi
+
 rm -f ./files/*.tmp
 
 # 1. Download list of russian IP addresses (may be outdated, but a good start)
