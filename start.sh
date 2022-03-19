@@ -118,7 +118,7 @@ if [[ $MODE == "http" ]]; then
 	if [[ ! -f "./files/ips-80.txt" ]]; then
 		# For the first run, use all IPs (it will create a cached list of IPs that connected successfully)
 		echo "This is the first run - it will be slow, so bear with me"
-		cat ./files/russian-ips.txt | ./http/http-msg.sh -t $TOR_PROXY
+		cat ./files/russian-ips.txt | ./http/http-msg.sh $TOR_PROXY
 		echo "From here on, only the successfully reached IPs will be used - will be much faster!"
 	fi
 
